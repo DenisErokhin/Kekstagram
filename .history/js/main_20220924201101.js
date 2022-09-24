@@ -86,6 +86,8 @@ const Avatars = {
 
 const getRundomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
 
+
+
 //Получение объекта коментария
 
 const getComment = () => {
@@ -97,14 +99,13 @@ const getComment = () => {
   }
 };
 
-// Cоздание массива объектов комментариев
+//Cоздание массива объектов комментариев
 
 const getArrayComments = () => {
   return new Array(getRandomNumber(Comments.MIN, Comments.MAX)).fill(null).map(() => getComment());
 };
 
-// Создание массива объектов описания фотографии, опубликованной пользователем
-
+// Создание объекта описания фотографии, опубликованной пользователем
 const getDescribingPhotos = () => {
   const describingPhotos = [];
 
@@ -116,7 +117,7 @@ const getDescribingPhotos = () => {
       likes: getRandomNumber(Likes.MIN, Likes.MAX),
       comments: getArrayComments(),
     })
-  }
+}
   return describingPhotos;
 };
 

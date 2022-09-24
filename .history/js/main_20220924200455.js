@@ -72,10 +72,16 @@ const Comments = {
   MAX: 6,
 };
 
+const IdDescriptions = {
+  MIN: 1,
+  MAX: 25,
+};
+
 const IdComments = {
   MIN: 1,
   MAX: 999,
 };
+
 
 const Avatars = {
   MIN: 1,
@@ -86,25 +92,43 @@ const Avatars = {
 
 const getRundomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
 
+//Получение массива с рандомными неповторяющимися цифрами в диапазоне
+
+const getNoRepeatNumbers = (min, max) => {
+  const numbers = [];
+
+  while (numbers.length < max) {
+    const rundomNumber = getRandomNumber(min, max);
+    const isNewNumber = numbers.every((element) => element !== rundomNumber)
+
+    if(numbers.length === 0 || isNewNumber) {
+      numbers.push(rundomNumber);
+    }
+  }
+  return numbers;
+}
+
+const idDescriptions = getNoRepeatNumbers(IdDescriptions.MIN, IdDescriptions.MAX);
+const idComments = getNoRepeatNumbers(IdComments.MIN, IdComments.MAX);
+
 //Получение объекта коментария
 
 const getComment = () => {
   return  {
-    id: getRandomNumber(IdComments.MIN, IdComments.MAX),
+    id: getRundomArrayElement(idComments),
     avatar: 'img/avatar-' + getRandomNumber(Avatars.MIN, Avatars.MAX) + '.svg',
     message: getRundomArrayElement(MESSAGES),
     NAMES: getRundomArrayElement(NAMES),
   }
 };
 
-// Cоздание массива объектов комментариев
+//Cоздание массива объектов комментариев
 
 const getArrayComments = () => {
   return new Array(getRandomNumber(Comments.MIN, Comments.MAX)).fill(null).map(() => getComment());
 };
 
-// Создание массива объектов описания фотографии, опубликованной пользователем
-
+// Создание объекта описания фотографии, опубликованной пользователем
 const getDescribingPhotos = () => {
   const describingPhotos = [];
 
@@ -116,7 +140,7 @@ const getDescribingPhotos = () => {
       likes: getRandomNumber(Likes.MIN, Likes.MAX),
       comments: getArrayComments(),
     })
-  }
+}
   return describingPhotos;
 };
 

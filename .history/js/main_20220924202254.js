@@ -103,7 +103,7 @@ const getArrayComments = () => {
   return new Array(getRandomNumber(Comments.MIN, Comments.MAX)).fill(null).map(() => getComment());
 };
 
-// Создание массива объектов описания фотографии, опубликованной пользователем
+// Создание массива об описания фотографии, опубликованной пользователем
 
 const getDescribingPhotos = () => {
   const describingPhotos = [];

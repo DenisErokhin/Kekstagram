@@ -72,9 +72,19 @@ const Comments = {
   MAX: 6,
 };
 
+const IdDescriptions = {
+  MIN: 1,
+  MAX: 25,
+};
+
 const IdComments = {
   MIN: 1,
-  MAX: 999,
+  MAX: 200,
+};
+
+const Addresses = {
+  MIN: 1,
+  MAX: 25,
 };
 
 const Avatars = {
@@ -86,38 +96,61 @@ const Avatars = {
 
 const getRundomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
 
+//Получение массива с рандомными неповторяющимися цифрами в диапазоне
+
+const getNoRepeatNumbers = (min, max) => {
+  const numbers = [];
+
+  while (numbers.length < max) {
+    const rundomNumber = getRandomNumber(min, max);
+    const isNewNumber = numbers.every((element) => element !== rundomNumber)
+
+    if(numbers.length === 0 || isNewNumber) {
+      numbers.push(rundomNumber);
+    }
+  }
+  return numbers;
+}
+
+const idDescriptions = getNoRepeatNumbers(IdDescriptions.MIN, IdDescriptions.MAX);
+const idComments = getNoRepeatNumbers(IdComments.MIN, IdComments.MAX);
+const addresses = getNoRepeatNumbers(Addresses.MIN, Addresses.MAX);
+
 //Получение объекта коментария
 
 const getComment = () => {
-  return  {
-    id: getRandomNumber(IdComments.MIN, IdComments.MAX),
+
+  array
+  return {
+    id: ,
     avatar: 'img/avatar-' + getRandomNumber(Avatars.MIN, Avatars.MAX) + '.svg',
     message: getRundomArrayElement(MESSAGES),
     NAMES: getRundomArrayElement(NAMES),
   }
 };
 
-// Cоздание массива объектов комментариев
+//Cоздание массива объектов комментариев
 
 const getArrayComments = () => {
   return new Array(getRandomNumber(Comments.MIN, Comments.MAX)).fill(null).map(() => getComment());
 };
 
-// Создание массива объектов описания фотографии, опубликованной пользователем
+// Создание объекта описания фотографии, опубликованной пользователем
 
-const getDescribingPhotos = () => {
-  const describingPhotos = [];
-
-  for (let i = 1; i <= NUMBER_DESCRIBING_PHOTOS; i++) {
-    describingPhotos.push({
-      id: i,
-      url : 'photos/' + i + '.jpg',
-      describing: getRundomArrayElement(DESCRIBING_TEXTS),
-      likes: getRandomNumber(Likes.MIN, Likes.MAX),
-      comments: getArrayComments(),
-    })
+const getDescribing = () => {
+  return {
+    id: getElement(idDescriptions),
+    url : 'photos/' + addresses.pop() + '.jpg',
+    describing: getRundomArrayElement(DESCRIBING_TEXTS),
+    likes: getRandomNumber(Likes.MIN, Likes.MAX),
+    comments: getArrayComments(),
   }
-  return describingPhotos;
 };
 
-getDescribingPhotos();
+// Cоздание массива объектов, объекты это описания фотографий опубликованных пользователями
+
+const getDescribingPhotos = () => {
+  return new Array(NUMBER_DESCRIBING_PHOTOS).fill(null).map(() => getDescribing());
+};
+
+
