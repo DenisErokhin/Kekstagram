@@ -7,4 +7,3 @@ pictures;
 
 import { fileUpload } from './editor.js';
 
-fileUpload;
