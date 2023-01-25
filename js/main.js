@@ -7,4 +7,10 @@ pictures;
 
 import { fileUpload } from './editor.js';
 
+
 fileUpload;
+
+import { hashtagField, commentField } from './validation.js';
+
+hashtagField;
+commentField;

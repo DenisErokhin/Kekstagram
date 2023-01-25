@@ -14,7 +14,7 @@ const getRandomNumber = (min, max) => {
 
 //функция для проверки максимальной длины строки
 
-const checkLengthString = (text, maxLength) => text.length <= maxLength;
+const checkLengthString = (text, maxLength) => text.length < maxLength;
 
 // Получение рандомного элемента массива
 

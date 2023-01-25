@@ -27,7 +27,7 @@ noUiSlider.create(sliderElement, {
     min: 0,
     max: 1,
   },
-  start: 0.5,
+  start: 0,
   step: 0.1,
   connect: 'lower',
   format: {
@@ -65,7 +65,7 @@ radioButtons.forEach((radioButton) => {
           max: 1,
         },
         step: 0.1,
-        start: 0.5,
+        start: 1,
       });
     }  else if (radioButton.value === marvinKey) {
       sliderElement.noUiSlider.updateOptions({
@@ -74,7 +74,7 @@ radioButtons.forEach((radioButton) => {
           max: 100,
         },
         step: 1,
-        start: 50,
+        start: 100,
       });
     } else if (radioButton.value === phobosKey) {
       sliderElement.noUiSlider.updateOptions({
@@ -83,7 +83,7 @@ radioButtons.forEach((radioButton) => {
           max: 3,
         },
         step: 0.1,
-        start: 1.5,
+        start: 3,
       });
     } else if (radioButton.value === heatKey) {
       sliderElement.noUiSlider.updateOptions({
@@ -92,7 +92,7 @@ radioButtons.forEach((radioButton) => {
           max: 3,
         },
         step: 0.1,
-        start: 2,
+        start: 3,
       });
     }
   })
@@ -101,7 +101,6 @@ radioButtons.forEach((radioButton) => {
 sliderElement.noUiSlider.on('update', (values, handle) => {
   valueElement.value = values[handle];
   let radioChecked;
-
   radioButtons.forEach((radioButton) => {
     if (radioButton.checked) {
       radioChecked = radioButton;
@@ -114,8 +113,10 @@ sliderElement.noUiSlider.on('update', (values, handle) => {
     imgUploadPreview.style.filter = `${sepia}(${values[handle]})`;
   } else if (radioChecked.value === marvinKey) {
     imgUploadPreview.style.filter = `${marvin}(${values[handle]}%)`;
+    valueElement.value += '%';
   } else if (radioChecked.value === phobosKey) {
     imgUploadPreview.style.filter = `${phobos}(${values[handle]}px)`;
+    valueElement.value += 'px';
   } else if (radioChecked.value === heatKey) {
     imgUploadPreview.style.filter = `${heat}(${values[handle]})`;
   }

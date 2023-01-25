@@ -1,5 +1,6 @@
 import { isEscEvent} from './util.js';
 import { sliderBox, lastClass } from './effects.js';
+import { hashtagField, commentField } from './validation.js';
 
 const Scale = {
   MIN: 25,
@@ -20,7 +21,9 @@ let scalePicture;
 // Добавление и редактирование фото
 
 const closeFormPhotoEsc = (evt) => {
-  if(isEscEvent(evt)) {
+  if(document.activeElement === hashtagField || document.activeElement === commentField) {
+    return;
+  } else if (isEscEvent(evt)) {
     evt.preventDefault();
     closeFormFoto();
   }
