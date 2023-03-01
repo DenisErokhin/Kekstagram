@@ -11,6 +11,8 @@ const submitForm = document.querySelector('.img-upload__submit');
 
 const regularExpression = new RegExp('^#[a-zA-Z0-9]{1,19}$');
 
+// Проверка валидности полей
+
 hashtagField.addEventListener('input', () => {
   if (!hashtagField.value.length) {
     hashtagField.setCustomValidity('');
@@ -48,7 +50,8 @@ hashtagField.addEventListener('input', () => {
   }
 });
 
-const checkInvalidElement = () => {
+const checkValidElement = () => {
+
   if (!hashtagField.validity.valid) {
     hashtagField.style.borderColor = 'red';
   }
@@ -58,6 +61,4 @@ const checkInvalidElement = () => {
   }
 };
 
-submitForm.addEventListener('click', checkInvalidElement);
-
-export { hashtagField, commentField };
+export { hashtagField, commentField, submitForm, checkValidElement };

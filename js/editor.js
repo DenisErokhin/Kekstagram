@@ -1,6 +1,8 @@
 import { isEscEvent} from './util.js';
 import { sliderBox, lastClass } from './effects.js';
-import { hashtagField, commentField } from './validation.js';
+import { hashtagField, commentField, submitForm, checkValidElement } from './validation.js';
+import { sendData } from './api.js';
+import { showPopup } from './popups.js';
 
 const Scale = {
   MIN: 25,
@@ -9,29 +11,25 @@ const Scale = {
 };
 
 const fileUpload = document.querySelector('#upload-file');
-const formChangePhoto = document.querySelector('.img-upload__overlay');
+const popupAddPhoto = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
-const buttonCloseForm = formChangePhoto.querySelector('#upload-cancel');
-const scaleControlSmaller = formChangePhoto.querySelector('.scale__control--smaller');
-const scaleControlBigger = formChangePhoto.querySelector('.scale__control--bigger');
-const scaleControlValue = formChangePhoto.querySelector('.scale__control--value');
-const imgUploadPreview = formChangePhoto.querySelector('.img-upload__preview > img');
+const buttonCloseForm = popupAddPhoto.querySelector('#upload-cancel');
+
+const scaleControlSmaller = popupAddPhoto.querySelector('.scale__control--smaller');
+const scaleControlBigger = popupAddPhoto.querySelector('.scale__control--bigger');
+const scaleControlValue = popupAddPhoto.querySelector('.scale__control--value');
 let scalePicture;
+
+const imgUploadPreview = popupAddPhoto.querySelector('.img-upload__preview > img');
+
+const formPhoto = document.querySelector('.img-upload__form');
+const successPopup = document.querySelector('#success').content.querySelector('.success');
+const errorPopup = document.querySelector('#error').content.querySelector('.error');
 
 // Добавление и редактирование фото
 
-const closeFormPhotoEsc = (evt) => {
-  if(document.activeElement === hashtagField || document.activeElement === commentField) {
-    return;
-  } else if (isEscEvent(evt)) {
-    evt.preventDefault();
-    closeFormFoto();
-  }
-};
-
 const resetSettings = () => {
   imgUploadPreview.style.transform = `scale( ${scalePicture = 1} )`;
-  imgUploadPreview.style.filter = 'none';
   scaleControlValue.value = Scale.MAX + '%';
   sliderBox.classList.add('visually-hidden');
   if (lastClass) {
@@ -39,20 +37,30 @@ const resetSettings = () => {
   }
 };
 
-fileUpload.addEventListener('change', () => {
-  formChangePhoto.classList.remove('hidden');
-  body.classList.add('modal-open');
-  resetSettings();
-  document.addEventListener('keydown', closeFormPhotoEsc);
-  buttonCloseForm.addEventListener('click', closeFormFoto);
-});
+const closeFormPhotoEsc = (evt) => {
+  if(document.activeElement === hashtagField || document.activeElement === commentField) {
+    return;
+  } else if (isEscEvent(evt)) {
+    evt.preventDefault();
+    closeFormPhoto();
+  }
+};
 
-const closeFormFoto = () => {
-  formChangePhoto.classList.add('hidden');
+const closeFormPhoto = () => {
+  popupAddPhoto.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', closeFormPhotoEsc);
-  buttonCloseForm.removeEventListener('click', closeFormFoto);
   fileUpload.value = '';
+  hashtagField.value = '';
+  commentField.value = '';
+  imgUploadPreview.style.transform = `scale( ${scalePicture = 1} )`;
+  imgUploadPreview.style.filter = 'none';
+  popupAddPhoto.querySelector('#effect-none').checked = true;
+  
+  document.removeEventListener('keydown', closeFormPhotoEsc);
+  buttonCloseForm.removeEventListener('click', closeFormPhoto);
+  submitForm.removeEventListener('click', checkValidElement);
+  scaleControlSmaller.removeEventListener('click', clickControl);
+  scaleControlBigger.removeEventListener('click', clickControl);
 };
 
 // Масштаб фото
@@ -69,7 +77,26 @@ const clickControl = (evt) => {
   }
 };
 
-scaleControlSmaller.addEventListener('click', clickControl);
-scaleControlBigger.addEventListener('click', clickControl);
+fileUpload.addEventListener('change', () => {
+  popupAddPhoto.classList.remove('hidden');
+  body.classList.add('modal-open');
+  resetSettings();
+  document.addEventListener('keydown', closeFormPhotoEsc);
+  buttonCloseForm.addEventListener('click', closeFormPhoto);
+  submitForm.addEventListener('click', checkValidElement);
+  scaleControlSmaller.addEventListener('click', clickControl);
+  scaleControlBigger.addEventListener('click', clickControl);
+});
 
-export { fileUpload };
+// Отправка формы
+
+formPhoto.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(
+    () => showPopup(successPopup),
+    () => showPopup(errorPopup),
+    new FormData(evt.target),
+  );
+});
+
+export { fileUpload, closeFormPhoto };

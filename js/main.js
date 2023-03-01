@@ -1,16 +1,10 @@
-import { getDescribingPhotos } from './describing-photos.js';
-
-getDescribingPhotos();
-
-import {pictures} from './add-preview.js';
-pictures;
-
+import { getData } from './api.js';
 import { fileUpload } from './editor.js';
-
+import { hashtagField, commentField } from './validation.js';
 
 fileUpload;
 
-import { hashtagField, commentField } from './validation.js';
-
 hashtagField;
 commentField;
+
+getData();

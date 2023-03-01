@@ -98,4 +98,4 @@ const getDescribingPhotos = () => {
   return describingPhotos;
 };
 
-export { getDescribingPhotos };
+// export { getDescribingPhotos };

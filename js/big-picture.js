@@ -68,10 +68,11 @@ const closePictureClick = () => {
 // Получаем большую фотографию
 
 const getBigPicture = (describingPhoto) => {
+
   bigPicture.querySelector('.big-picture__img > img').src = describingPhoto.url;
   bigPicture.querySelector('.likes-count').textContent = describingPhoto.likes;
   bigPicture.querySelector('.comments-count').textContent = describingPhoto.comments.length;
-  bigPicture.querySelector('.social__caption').textContent = describingPhoto.describing;
+  bigPicture.querySelector('.social__caption').textContent = describingPhoto.description;
   getComments(describingPhoto.comments);
   buttonClose.addEventListener('click', closePictureClick);
   document.addEventListener('keydown', closePictureEsc);
