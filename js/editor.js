@@ -55,7 +55,7 @@ const closeFormPhoto = () => {
   imgUploadPreview.style.transform = `scale( ${scalePicture = 1} )`;
   imgUploadPreview.style.filter = 'none';
   popupAddPhoto.querySelector('#effect-none').checked = true;
-  
+
   document.removeEventListener('keydown', closeFormPhotoEsc);
   buttonCloseForm.removeEventListener('click', closeFormPhoto);
   submitForm.removeEventListener('click', checkValidElement);

@@ -1,5 +1,4 @@
 import { showAlert } from './util.js';
-import { addDataPictures } from './add-preview.js';
 
 const Urls = {
   GET: 'https://23.javascript.pages.academy/kekstagram/data',
@@ -8,7 +7,7 @@ const Urls = {
 
 // Получение данных
 
-const getData = () => {
+const getData = (onSuccess) => {
   fetch(Urls.GET)
     .then((response) => {
       if (response.ok) {
@@ -17,7 +16,7 @@ const getData = () => {
 
       throw Error(`${response.status} : ${response.statusText}`);
     })
-    .then((dataImages) => addDataPictures(dataImages))
+    .then((dataImages) => onSuccess(dataImages))
     .catch(() => {
       showAlert('Что-то пошло не так, попробуйте обновить страницу');
     },

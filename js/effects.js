@@ -1,3 +1,5 @@
+/* global noUiSlider:readonly */
+
 const Effects = {
   chrome: 'grayscale',
   sepia: 'sepia',

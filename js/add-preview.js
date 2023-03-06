@@ -6,6 +6,7 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 // const describingPhotos = getDescribingPhotos();
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
+const filterPicture = document.querySelector('.img-filters');
 
 const addDataPictures = (dataPictures) => {
 
@@ -22,10 +23,17 @@ const addDataPictures = (dataPictures) => {
     });
     fragment.appendChild(photoPreview);
   });
+
+  pictures.querySelectorAll('.picture').forEach(picture => picture.remove());
+
   pictures.appendChild(fragment);
 
+  if (filterPicture.classList.contains('img-filters--inactive')) {
+    filterPicture.classList.remove('img-filters--inactive');
+  }
+
   return pictures;
-}
+};
 
 export { addDataPictures };
 
