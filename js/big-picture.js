@@ -2,9 +2,6 @@ import { isEscEvent } from './util.js';
 
 const COMMENTS_SHOW_NUMBER = 5;
 
-let commentsShowMin = COMMENTS_SHOW_NUMBER;
-let commentsShowMax = commentsShowMin + COMMENTS_SHOW_NUMBER;
-
 const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
 const buttonClose = bigPicture.querySelector('.big-picture__cancel');
@@ -12,6 +9,9 @@ const commentsList = document.querySelector('.social__comments');
 
 const showCommentsButton = bigPicture.querySelector('.comments-loader');
 const commentCount = bigPicture.querySelector('.social__comment-count');
+
+let commentsShowMin = COMMENTS_SHOW_NUMBER;
+let commentsShowMax = commentsShowMin + COMMENTS_SHOW_NUMBER;
 const commentsShowValue = commentCount.childNodes[0];
 
 // Функция обработки клика показа комментариев
