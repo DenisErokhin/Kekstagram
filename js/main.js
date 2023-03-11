@@ -8,3 +8,4 @@ getData((pictures) => {
   addDataPictures(pictures);
   addFilterClick(pictures);
 });
+

@@ -1,14 +1,66 @@
-import { isEscEvent } from './util.js'
+import { isEscEvent } from './util.js';
+
+const COMMENTS_SHOW_NUMBER = 5;
+
+let commentsShowMin = COMMENTS_SHOW_NUMBER;
+let commentsShowMax = commentsShowMin + COMMENTS_SHOW_NUMBER;
 
 const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
 const buttonClose = bigPicture.querySelector('.big-picture__cancel');
-const comments = document.querySelector('.social__comments');
+const commentsList = document.querySelector('.social__comments');
 
-// Скрываем на время
+const showCommentsButton = bigPicture.querySelector('.comments-loader');
+const commentCount = bigPicture.querySelector('.social__comment-count');
+const commentsShowValue = commentCount.childNodes[0];
 
-bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-bigPicture.querySelector('.comments-loader').classList.add('hidden');
+// Функция обработки клика показа комментариев
+
+const showComments = () => {
+  const comments = commentsList.children;
+  commentsShowValue.textContent = commentsShowMax + ' из ';
+
+  for (let i = commentsShowMin; i < commentsShowMax; i++) {
+
+    if (i < comments.length - 1) {
+      comments[i].classList.remove('hidden');
+    }
+
+    if (i === comments.length - 1) {
+      comments[i].classList.remove('hidden');
+      showCommentsButton.classList.add('hidden');
+      commentsShowValue.textContent = comments.length + ' из ';
+      break;
+    }
+  }
+
+  commentsShowMin += COMMENTS_SHOW_NUMBER;
+  commentsShowMax += COMMENTS_SHOW_NUMBER;
+};
+
+// Скрытие комментариев
+
+const hideComments = (comments) => {
+  for (let i = COMMENTS_SHOW_NUMBER; i < comments.length; i++) {
+    comments[i].classList.add('hidden');
+  }
+};
+
+// Проверка количества комментариев
+
+const checkLengthComments = (commentsList) => {
+  const comments = commentsList.children;
+
+  if (comments.length <= COMMENTS_SHOW_NUMBER) {
+    showCommentsButton.classList.add('hidden');
+    commentsShowValue.textContent = comments.length + ' из ';
+  } else {
+    hideComments(comments);
+    commentsShowValue.textContent = COMMENTS_SHOW_NUMBER + ' из ';
+    showCommentsButton.classList.remove('hidden');
+    showCommentsButton.addEventListener('click', showComments);
+  }
+};
 
 // Cоздание ноного элемента
 
@@ -16,9 +68,7 @@ const getElement = (tagName, className) => {
   const element = document.createElement(tagName);
   element.classList.add(className);
   return element;
-}
-
-comments.innerHTML = '';
+};
 
 // Получаем комментарий
 
@@ -34,7 +84,7 @@ const getComment = (element) => {
   picture.height = 35;
   text.textContent = element.message;
   return comment;
-}
+};
 
 // Получаем комментарии
 
@@ -42,11 +92,11 @@ const getComments = (elements) => {
 
   const commentsListFragment = document.createDocumentFragment();
 
-  elements.forEach ((element) => {
+  elements.forEach((element) => {
     commentsListFragment.appendChild(getComment(element));
   })
-  comments.appendChild(commentsListFragment);
-}
+  commentsList.appendChild(commentsListFragment);
+};
 
 // Обработчики на закрытие большой фотографии
 
@@ -55,19 +105,24 @@ const closePictureEsc = (evt) => {
     evt.preventDefault();
     closePictureClick();
   }
-}
+};
 
 const closePictureClick = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', closePictureEsc);
   buttonClose.removeEventListener('click', closePictureClick);
-  comments.innerHTML = '';
-}
+  showCommentsButton.removeEventListener('click', showComments);
+  commentsList.innerHTML = '';
+  commentsShowValue.textContent = '';
+  commentsShowMin = COMMENTS_SHOW_NUMBER;
+  commentsShowMax = commentsShowMin + COMMENTS_SHOW_NUMBER;
+};
 
 // Получаем большую фотографию
 
 const getBigPicture = (describingPhoto) => {
+  commentsList.innerHTML = '';
 
   bigPicture.querySelector('.big-picture__img > img').src = describingPhoto.url;
   bigPicture.querySelector('.likes-count').textContent = describingPhoto.likes;
@@ -76,9 +131,9 @@ const getBigPicture = (describingPhoto) => {
   getComments(describingPhoto.comments);
   buttonClose.addEventListener('click', closePictureClick);
   document.addEventListener('keydown', closePictureEsc);
-
+  checkLengthComments(commentsList);
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
-}
+};
 
 export { getBigPicture };
