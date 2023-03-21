@@ -1,4 +1,5 @@
-/* global noUiSlider:readonly */
+import noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
 
 const Effects = {
   chrome: 'grayscale',
