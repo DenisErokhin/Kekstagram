@@ -7,9 +7,7 @@ const RERENDER_DELAY = 500;
 const NUMBER_RANDOM_PICTURES = 10;
 
 const filterForm = document.querySelector('.img-filters__form');
-
 const activeClass = 'img-filters__button--active';
-
 let photos = [];
 
 const createArrayRandomPictures = (pictures) => {
@@ -40,7 +38,6 @@ const checkButtonClick = (evt) => {
     evt.target.classList.add(activeClass);
     filters[evt.target.id]();
   }
-
 };
 
 const addFilterClick = (pictures) => {

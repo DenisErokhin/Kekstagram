@@ -1,3 +1,5 @@
+// // Статичные, тестовые данные, при отсутствии данных с сервера, можно воспользоваться ими
+
 // import {getRandomNumber, getRundomArrayElement} from './util.js';
 
 // const DESCRIBING_TEXTS = [
@@ -81,7 +83,7 @@
 //   return new Array(getRandomNumber(Comments.MIN, Comments.MAX)).fill(null).map(() => getComment());
 // };
 
-// Создание массива объектов описания фотографии, опубликованной пользователем
+// // Создание массива объектов описания фотографии, опубликованной пользователем
 
 // const getDescribingPhotos = () => {
 //   const describingPhotos = [];

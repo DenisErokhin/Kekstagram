@@ -44,12 +44,11 @@ const showAlert = (message) => {
   alertContainer.style.backgroundColor = 'white';
 
   alertContainer.textContent = message;
-
   document.body.append(alertContainer);
 
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME)
-}
+};
 
-export {getRandomNumber, checkLengthString, getRundomArrayElement, isEscEvent, showAlert};
+export { getRandomNumber, checkLengthString, getRundomArrayElement, isEscEvent, showAlert };

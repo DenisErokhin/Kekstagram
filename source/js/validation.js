@@ -7,18 +7,17 @@ const MAX_NUMBER_HASHTAG = 5;
 
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
-const submitForm = document.querySelector('.img-upload__submit');
-
 const regularExpression = new RegExp('^#[a-zA-Z0-9]{1,19}$');
 
 // Проверка валидности полей
 
-hashtagField.addEventListener('input', () => {
+const checkValidHashtag = () => {
   if (!hashtagField.value.length) {
     hashtagField.setCustomValidity('');
     hashtagField.style.borderColor = '';
     return;
   }
+
   const hashtags = hashtagField.value.toLowerCase().trim().split(/\s+/);
   let message = '';
 
@@ -48,7 +47,7 @@ hashtagField.addEventListener('input', () => {
       return message;
     }
   }
-});
+}
 
 const checkValidElement = () => {
 
@@ -61,4 +60,4 @@ const checkValidElement = () => {
   }
 };
 
-export { hashtagField, commentField, submitForm, checkValidElement };
+export { hashtagField, commentField, checkValidElement, checkValidHashtag };

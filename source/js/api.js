@@ -1,6 +1,6 @@
 import { showAlert } from './util.js';
 
-const Urls = {
+const Url = {
   GET: 'https://23.javascript.pages.academy/kekstagram/data',
   POST: 'https://23.javascript.pages.academy/kekstagram',
 };
@@ -8,7 +8,7 @@ const Urls = {
 // Получение данных
 
 const getData = (onSuccess) => {
-  fetch(Urls.GET)
+  fetch(Url.GET)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -26,7 +26,7 @@ const getData = (onSuccess) => {
 // Отправка данных
 
 const sendData = (onSuccess, onFail, body) => {
-  fetch(Urls.POST,
+  fetch(Url.POST,
     {
       method: 'POST',
       body,

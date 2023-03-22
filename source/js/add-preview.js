@@ -1,11 +1,11 @@
-// import { getDescribingPhotos } from './describing-photos.js';
+// import { getDescribingPhotos } from './describing-photos.js'; Для добавления статичных, тестовых данных
 import { getBigPicture } from './big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-// const describingPhotos = getDescribingPhotos();
+// const describingPhotos = getDescribingPhotos(); Для добавления статичных, тестовых данных
 const fragment = document.createDocumentFragment();
-const pictures = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures');
 const filterPicture = document.querySelector('.img-filters');
 
 const addDataPictures = (dataPictures) => {
@@ -24,15 +24,15 @@ const addDataPictures = (dataPictures) => {
     fragment.appendChild(photoPreview);
   });
 
-  pictures.querySelectorAll('.picture').forEach(picture => picture.remove());
+  picturesContainer.querySelectorAll('.picture').forEach(picture => picture.remove());
 
-  pictures.appendChild(fragment);
+  picturesContainer.appendChild(fragment);
 
   if (filterPicture.classList.contains('img-filters--inactive')) {
     filterPicture.classList.remove('img-filters--inactive');
   }
 
-  return pictures;
+  return picturesContainer;
 };
 
 export { addDataPictures };

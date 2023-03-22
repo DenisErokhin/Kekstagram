@@ -1,7 +1,46 @@
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
-const Effects = {
+const valueSlider = {
+  default: {
+    min: 0,
+    max: 1,
+    step: 0.1,
+    start: 0,
+  },
+  chrome: {
+    min: 0,
+    max: 1,
+    step: 0.1,
+    start: 1,
+  },
+  sepia: {
+    min: 0,
+    max: 1,
+    step: 0.1,
+    start: 1,
+  },
+  marvin: {
+    min: 0,
+    max: 100,
+    step: 1,
+    start: 100,
+  },
+  phobos: {
+    min: 0,
+    max: 3,
+    step: 0.1,
+    start: 3,
+  },
+  heat: {
+    min: 1,
+    max: 3,
+    step: 0.1,
+    start: 3,
+  },
+};
+
+const Effect = {
   chrome: 'grayscale',
   sepia: 'sepia',
   marvin: 'invert',
@@ -10,28 +49,24 @@ const Effects = {
   none: 'none',
 };
 
-const imgUploadPreview = document.querySelector('.img-upload__preview > img');
+const {chrome, sepia, marvin, phobos, heat, none} = Effect;
+
+const uploadImg = document.querySelector('.img-upload__preview > img');
 const radioButtons = document.querySelectorAll('.effects__radio');
 const sliderBox = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
 let lastClass;
 
-const {chrome, sepia, marvin, phobos, heat} = Effects;
-
-const keysEffects = Object.keys(Effects);
-
-const [chromeKey, sepiaKey, marvinKey, phobosKey, heatKey, noneKey] = keysEffects;
-
-// Переключение эффектов фото
+// Cоздание слайдера
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 0,
-    max: 1,
+    min: valueSlider.default.min,
+    max: valueSlider.default.max,
   },
-  start: 0,
-  step: 0.1,
+  start: valueSlider.default.start,
+  step: valueSlider.default.step,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -46,82 +81,79 @@ noUiSlider.create(sliderElement, {
   },
 });
 
+// Получение активной радиокнопки
+const getCheckedButton = () => {
+  for (let i = 0; i < radioButtons.length; i++) {
+    if (radioButtons[i].checked) {
+      return radioButtons[i];
+    }
+  }
+};
+
+// Изменение значения слайдера
+
+const changeFilter = (checkedButton) => {
+  const valueButton = checkedButton.value;
+
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: valueSlider[valueButton].min,
+      max: valueSlider[valueButton].max,
+    },
+    step: valueSlider[valueButton].step,
+    start: valueSlider[valueButton].start,
+  });
+};
+
+const checkButton = () => {
+  const checkedButton = getCheckedButton();
+
+  if (lastClass) {
+    uploadImg.classList.remove(lastClass);
+  }
+
+  if (checkedButton.value === none) {
+    sliderBox.classList.add('visually-hidden');
+    uploadImg.style.filter = 'none';
+  } else {
+    changeFilter(checkedButton);
+    sliderBox.classList.remove('visually-hidden');
+    uploadImg.classList.add(`effects__preview--${checkedButton.value}`);
+    lastClass = `effects__preview--${checkedButton.value}`;
+  }
+}
+
+// Создание обработчиков для радиокнопок
+
 radioButtons.forEach((radioButton) => {
   radioButton.addEventListener('change', () => {
-    if (lastClass) {
-      imgUploadPreview.classList.remove(lastClass);
-    }
-
-    if (radioButton.value === noneKey) {
-      sliderBox.classList.add('visually-hidden');
-      imgUploadPreview.style.filter = 'none';
-    } else {
-      sliderBox.classList.remove('visually-hidden');
-      imgUploadPreview.classList.add(`effects__preview--${radioButton.value}`);
-      lastClass = `effects__preview--${radioButton.value}`;
-    }
-
-    if (radioButton.value === chromeKey || radioButton.value === sepiaKey) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        step: 0.1,
-        start: 1,
-      });
-    }  else if (radioButton.value === marvinKey) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100,
-        },
-        step: 1,
-        start: 100,
-      });
-    } else if (radioButton.value === phobosKey) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3,
-        },
-        step: 0.1,
-        start: 3,
-      });
-    } else if (radioButton.value === heatKey) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3,
-        },
-        step: 0.1,
-        start: 3,
-      });
-    }
+    checkButton();
   })
 });
 
+// Добавление значения фильтра картинке и нужному полю
+
 sliderElement.noUiSlider.on('update', (values, handle) => {
   valueElement.value = values[handle];
-  let radioChecked;
-  radioButtons.forEach((radioButton) => {
-    if (radioButton.checked) {
-      radioChecked = radioButton;
-    }
-  });
 
-  if (radioChecked.value === chromeKey) {
-    imgUploadPreview.style.filter = `${chrome}(${values[handle]})`;
-  } else if (radioChecked.value === sepiaKey) {
-    imgUploadPreview.style.filter = `${sepia}(${values[handle]})`;
-  } else if (radioChecked.value === marvinKey) {
-    imgUploadPreview.style.filter = `${marvin}(${values[handle]}%)`;
-    valueElement.value += '%';
-  } else if (radioChecked.value === phobosKey) {
-    imgUploadPreview.style.filter = `${phobos}(${values[handle]}px)`;
-    valueElement.value += 'px';
-  } else if (radioChecked.value === heatKey) {
-    imgUploadPreview.style.filter = `${heat}(${values[handle]})`;
+  const filters = {
+    chrome: () => `${chrome}(${values[handle]})`,
+    sepia: () => `${sepia}(${values[handle]})`,
+    heat: () => `${heat}(${values[handle]})`,
+    marvin: () => {
+      valueElement.value += '%';
+      return `${marvin}(${values[handle]}%)`;
+    },
+    phobos: () => {
+      valueElement.value += 'px';
+      return `${phobos}(${values[handle]}px)`
+    },
+  }
+
+  const checkedButton = getCheckedButton();
+
+  if (checkedButton.value !== none) {
+    uploadImg.style.filter = filters[checkedButton.value]();
   }
 });
 

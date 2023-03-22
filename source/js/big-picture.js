@@ -4,7 +4,7 @@ const COMMENTS_SHOW_NUMBER = 5;
 
 const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
-const buttonClose = bigPicture.querySelector('.big-picture__cancel');
+const closeButton = bigPicture.querySelector('.big-picture__cancel');
 const commentsList = document.querySelector('.social__comments');
 
 const showCommentsButton = bigPicture.querySelector('.comments-loader');
@@ -103,15 +103,15 @@ const getComments = (elements) => {
 const closePictureEsc = (evt) => {
   if(isEscEvent(evt)) {
     evt.preventDefault();
-    closePictureClick();
+    closePicture();
   }
 };
 
-const closePictureClick = () => {
+const closePicture = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', closePictureEsc);
-  buttonClose.removeEventListener('click', closePictureClick);
+  closeButton.removeEventListener('click', closePicture);
   showCommentsButton.removeEventListener('click', showComments);
   commentsList.innerHTML = '';
   commentsShowValue.textContent = '';
@@ -129,7 +129,7 @@ const getBigPicture = (describingPhoto) => {
   bigPicture.querySelector('.comments-count').textContent = describingPhoto.comments.length;
   bigPicture.querySelector('.social__caption').textContent = describingPhoto.description;
   getComments(describingPhoto.comments);
-  buttonClose.addEventListener('click', closePictureClick);
+  closeButton.addEventListener('click', closePicture);
   document.addEventListener('keydown', closePictureEsc);
   checkLengthComments(commentsList);
   body.classList.add('modal-open');
